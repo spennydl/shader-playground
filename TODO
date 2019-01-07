@@ -1,0 +1,20 @@
+# TODO
+
+- blinn phong - DONE
+- materials - DONE
+- light materials - DONE
+- multiple lights
+- attenuation - DONE - revisit after we have proper light structs
+- more complex models in scene - monitor perf
+
+- playtime!  stepped levels for color?
+    - spend some time here
+
+- render to framebuffer
+- MSAA with framebuffer
+- shadows (eep!)
+- deferred rendering
+- MSAA with deferred rendering
+- SSAO
+
+THEN GAME

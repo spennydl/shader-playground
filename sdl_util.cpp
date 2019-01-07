@@ -27,12 +27,19 @@ void SDLManager::configure_opengl()
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 
+    // use hardware accel
+    SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+
     // Turn on double buffering with a 24bit Z buffer.
     // You may need to change this to 16 or 32 for your system
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
     // synchronizes to monitor refresh rate
     SDL_GL_SetSwapInterval(1);
+
+    // multisample
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 }
 
 void SDLManager::init(int win_width, int win_height)
@@ -41,6 +48,7 @@ void SDLManager::init(int win_width, int win_height)
         return;
     }
 
+    configure_opengl();
     main_window = SDL_CreateWindow("Shader Playground",
                                     SDL_WINDOWPOS_CENTERED,
                                     SDL_WINDOWPOS_CENTERED,
@@ -54,12 +62,24 @@ void SDLManager::init(int win_width, int win_height)
 
     main_ctx = SDL_GL_CreateContext(main_window);
 
-    configure_opengl();
-
     GLenum err = glewInit();
     if (GLEW_OK != err) {
         std::cout << "Couldn't init glew" << std::endl;
     }
+
+    // blending
+    glEnable(GL_BLEND);
+    // opengl depth testing
+    glEnable(GL_DEPTH_TEST);
+    // gl multisampling
+    glEnable(GL_MULTISAMPLE);
+
+    int Buffers, Samples;
+	SDL_GL_GetAttribute( SDL_GL_MULTISAMPLEBUFFERS, &Buffers );
+	SDL_GL_GetAttribute( SDL_GL_MULTISAMPLESAMPLES, &Samples );
+	std::cout << "buf = " << Buffers << ", samples = " << Samples << "." << std::endl;
+
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
 void SDLManager::check_error(std::ostream& os)
